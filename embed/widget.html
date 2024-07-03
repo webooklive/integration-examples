@@ -5,77 +5,44 @@
 
 
     <title>Widget Webook integration example</title>
+    <link href="/dist/style.css" rel="stylesheet">
 
     <style>
         body, html {
         }
 
-        .webook-widget-container {
+        .iframe-container {
             height: 100px;
             display: flex;
             justify-content: center;
         }
 
-        .webook-widget-iframe {
+        .full-height-iframe {
             width: 702px;
-            height: 100%;
+            height: 50%;
             border: none;
-            min-height: 500px
         }
     </style>
 </head>
 <body>
-<div style=" display: flex; justify-content: center; flex-direction: column">
 
-    <div style=" display: flex; justify-content: center">
-        <div style="background-color: lightblue; height: 50px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; min-width:300px;max-width:400px;align-self: center; border-radius: 10px ">
-            Other content before iframe
-        </div>
+
+<div style=" display: flex; justify-content: center">
+    <div style="background-color: lightblue; height: 50px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; min-width:300px;max-width:400px;align-self: center; border-radius: 10px ">
+        Other content before iframe
     </div>
-    
-    <div class="webook-widget-container" id="webookWidgetIframe">
-        <iframe class="webook-widget-iframe"
-                src="https://www.webook.live/order/631f29922d95f4da6c05b077/631f29922d95f4da6c05b076/633089d0cefe88c21670a08e?language=he"></iframe>
-    </div>
-
-
-    <div style=" display: flex; justify-content: center">
-        <div style="background-color: lightblue; height: 50px; display: flex; justify-content: center; align-items: center; margin-top: 20px; min-width:300px;max-width:400px;align-self: center; border-radius: 10px ">
-            Other content after iframe
-        </div>
+</div>
+<div id="my-widget-container"></div>
+<script src="/dist/my-lib.umd.js"></script>
+<script>
+    MyLib.renderWidget('my-widget-container', { /* props */});
+</script>
+</div>
+<div style=" display: flex; justify-content: center">
+    <div style="background-color: lightblue; height: 50px; display: flex; justify-content: center; align-items: center; margin-top: 20px; min-width:300px;max-width:400px;align-self: center; border-radius: 10px ">
+        Other content after iframe
     </div>
 </div>
 
 </body>
 </html>
-
-<script type="text/javascript">
-    const frameId = 'webookWidgetIframe'
-    const iframe = document.getElementById(frameId);
-
-    window.addEventListener('message', function (event) {
-
-        if (event.data && event.data.height) {
-            iframe.style.height = event.data.height + 'px';
-        }
-        if (event.data && event.data.width) {
-            iframe.style.width = event.data.width + 'px';
-        }
-    });
-
-    function getQueryParams() {
-        const params = new URLSearchParams(window.location.search);
-        return params.toString();
-    }
-
-    function propagateQueryParams() {
-        let iframeSrc = iframe.src;
-        const queryParams = getQueryParams();
-        if (queryParams) {
-            iframeSrc += (iframeSrc.includes('?') ? '&' : '?') + queryParams;
-        }
-        iframe.src = iframeSrc;
-    }
-
-    propagateQueryParams()
-</script>
